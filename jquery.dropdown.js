@@ -79,8 +79,9 @@
                     }
                 });
 
-                imagesArrow.click(function (event) {
+                imagesArrow.mousedown(function (event) {
                     $.dropdown._showResult(target);
+                    event.stopPropagation();
                 });
 
             }
@@ -101,6 +102,57 @@
             this._insData(target, this._selectedItem, object);
             var instance = this._getData(target, this._instance);
             target.value = object[instance["dataTextField"]];
+        },
+
+        _buildDivResult: function (data, instance, divResult) {
+
+            var colums = instance.columns;
+
+            var table, thead, trHead, tbody, trBody;
+
+            table = $("<table class='result' cellspacing=0 cellpadding=0>");
+            //thead
+            thead = $("<thead>");
+            trHead = $("<tr>");
+            $(colums).each(function (index, object) {
+                if (object["hidden"] === false) {
+                    var th = $("<th>");
+                    th.html(object["title"]);
+                    th.appendTo(trHead);
+                }
+            });
+            trHead.appendTo(thead);
+            thead.appendTo(table);
+
+            //tbody
+            tbody = $("<tbody>");
+            $(data).each(function (index, objData) {
+                trBody = $("<tr>");
+
+                $(colums).each(function (index, objColumns) {
+                    if (objColumns["hidden"] === false) {
+                        var td = $("<td>");
+                        td.html(objData[objColumns["field"]]);
+
+                        td.mousedown(function (event) {
+                            $.dropdown._selectIndexChanged(objData, instance.input[0]);
+                        });
+
+                        td.appendTo(trBody);
+
+
+                    }
+                });
+
+
+                trBody.appendTo(tbody);
+
+
+            });
+            tbody.appendTo(table);
+
+            table.appendTo(divResult);
+
         },
 
         _getSelectedItemDropDownList: function (target) {
@@ -125,59 +177,23 @@
                 divResult = $('<div>');
                 divResult.attr("class", "divResult");
                 divResult.width(instance.popUpWidth ? instance.popUpWidth : 400);
-                divResult.height(instance.popUpHeight ? instance.popUpHeight : 100);
+                if (instance.popUpHeight && !isNaN(instance.popUpHeight))
+                    divResult.height(instance.popUpHeight);
                 divResult.appendTo(parent);
 
                 if (instance.dataSource)
                 {
                     var data = instance.dataSource.data;
-                    var colums = instance.columns;
-
-                    var table, thead, trHead, tbody, trBody;
-
-                    table = $("<table class='result' cellspacing=0 cellpadding=0>");
-                    //thead
-                    thead = $("<thead>");
-                    trHead = $("<tr>");
-                    $(colums).each(function (index, object) {
-                        if (object["hidden"] === false) {
-                            var th = $("<th>");
-                            th.html(object["title"]);
-                            th.appendTo(trHead);
+                    if (!data && instance.dataSource.transport && instance.dataSource.type) {
+                        if (instance.dataSource.transport.read) {
+                            $.getJSON(instance.dataSource.transport.read, function (responseData) {
+                                $.dropdown._buildDivResult(responseData, instance, divResult);
+                            });
                         }
-                    });
-                    trHead.appendTo(thead);
-                    thead.appendTo(table);
-                   
-                    //tbody
-                    tbody = $("<tbody>");
-                    $(data).each(function (index, objData) {
-                        trBody = $("<tr>");
-                        
-                        $(colums).each(function (index, objColumns) {
-                            if (objColumns["hidden"] === false)
-                            {
-                                var td = $("<td>");
-                                td.html(objData[objColumns["field"]]);
-
-                                td.mousedown(function (event) {
-                                    $.dropdown._selectIndexChanged(objData, input);
-                                });
-
-                                td.appendTo(trBody);
-
-                                
-                            }
-                        });
-                        
-
-                        trBody.appendTo(tbody);
-                        
-                        
-                    });
-                    tbody.appendTo(table);
-
-                    table.appendTo(divResult);
+                    }
+                    else {
+                        $.dropdown._buildDivResult(data, instance, divResult);
+                    }
                     
                 }
 

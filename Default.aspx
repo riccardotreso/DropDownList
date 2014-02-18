@@ -61,11 +61,52 @@
             });
 
             $('#Text1').dropdown({
-                popUpWidth: 100,
-                popUpHeight: 700
+                popUpWidth: 700,
+                popUpHeight: "auto",
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: "http://pectp.apiary.io/WBE"
+                    },
+                },
+                dataTextField: "Descrizione",
+                dataValueField: "WBE",
+                columns: [{
+                    field: "WBE",
+                    hidden: false,
+                    title: "WBE"
+                },
+                {
+                    field: "Descrizione",
+                    hidden: false,
+                    title: "Descrizione"
+                }]
+
             });
 
-            $('#Text2').dropdown();
+            $('#Text2').dropdown({
+                popUpWidth: 700,
+                popUpHeight: "auto",
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: "http://pectp.apiary.io/Fornitore"
+                    },
+                },
+                dataTextField: "Descrizione",
+                dataValueField: "IdFornitore",
+                columns: [{
+                    field: "IdFornitore",
+                    hidden: true,
+                    title: "IdFornitore"
+                },
+                {
+                    field: "Descrizione",
+                    hidden: false,
+                    title: "Descrizione"
+                }]
+
+            });
 
             $('#Text3').dropdown();
         });
@@ -103,7 +144,7 @@
 
             table.result td
             {
-                border: solid 1px silver;
+                border-bottom: solid 1px silver;
             }
 
         .divContainer
@@ -123,6 +164,12 @@
             position: absolute;
             z-index: 100000;
             margin-top: -4px;
+            cursor: default;
+
+            -moz-box-shadow: 10px 10px 5px #dedede;
+            -webkit-box-shadow: 10px 10px 5px #dedede;
+            filter: progid:DXImageTransform.Microsoft.Shadow(color='#dedede', Direction=135, Strength=10);
+            box-shadow: 10px 10px 5px #dedede;
         }
 
         .spaninput
@@ -167,7 +214,7 @@
                     <td>
                         <span>DDL1</span>
                         <input type="text" id="ddl1" />
-                        <input type="submit" value="getSelectedItem" onclick="return Test();" />
+                        <%--<input type="submit" value="getSelectedItem" onclick="return Test();" />--%>
                     </td>
                 </tr>
                 <tr>
@@ -185,7 +232,7 @@
             <input type="text" id="Text3" />
 
 
-            
+
 
 
         </div>
