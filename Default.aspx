@@ -34,7 +34,8 @@
 
             $('#ddl1').dropdown({
                 popUpWidth: 700,
-                popUpHeight: 500,
+                popUpHeight: "auto",
+                width: 200,
                 dataSource: {
                     data: list
                 },
@@ -63,6 +64,7 @@
             $('#Text1').dropdown({
                 popUpWidth: 700,
                 popUpHeight: "auto",
+                width: 300,
                 dataSource: {
                     type: "json",
                     transport: {
@@ -87,6 +89,7 @@
             $('#Text2').dropdown({
                 popUpWidth: 700,
                 popUpHeight: 100,
+                width: 400,
                 dataSource: {
                     type: "json",
                     transport: {
@@ -165,12 +168,15 @@
             z-index: 100000;
             margin-top: -4px;
             cursor: default;
-            overflow-y:auto;
-
+            overflow-y: auto;
             -moz-box-shadow: 10px 10px 5px #dedede;
             -webkit-box-shadow: 10px 10px 5px #dedede;
             filter: progid:DXImageTransform.Microsoft.Shadow(color='#dedede', Direction=135, Strength=10);
             box-shadow: 10px 10px 5px #dedede;
+
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
         }
 
         .spaninput
@@ -178,10 +184,20 @@
             float: left;
             height: 19px;
             width: 150px;
+            border: 1px solid silver;
             border-right-style: none;
             overflow: hidden;
             position: relative;
             display: inline-block;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            -webkit-border-bottom-right-radius: 0px;
+            -webkit-border-top-right-radius: 0px;
+            -moz-border-bottom-right-radius: 0px;
+            -moz-border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-top-right-radius: 0px;
         }
 
         .icon
@@ -194,6 +210,16 @@
             overflow: hidden;
             display: inline-block;
             border: solid 1px silver;
+            border-left-style: none;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            -webkit-border-bottom-left-radius: 0px;
+            -webkit-border-top-left-radius: 0px;
+            -moz-border-bottom-left-radius: 0px;
+            -moz-border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
         }
 
             .icon:hover

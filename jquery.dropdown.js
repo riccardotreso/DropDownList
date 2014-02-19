@@ -70,6 +70,11 @@
                 ddl = $.extend(ddl, settings || {});
                 this._insData(target, this._instance, ddl);
 
+                if (ddl.width && !isNaN(ddl.width))
+                    $(target).width(ddl.width);
+                else
+                    $(target).width(150);
+
                 //bind event 
                 $(target).keyup(function (event) {
                     if (event.keyCode === 13) {
@@ -231,7 +236,7 @@
             var target = event.target;
             if (!$(target).hasClass("divResult")) {
                 $.dropdown._closeDivResult();
-                
+
             }
 
         }
