@@ -38,7 +38,7 @@
 
     $.extend(DropDownList.prototype, {
 
-        
+
 
         /* Attach the drop-down list to a jQuery selection.
 		 * @param  target	element - the target input field or division or span
@@ -48,7 +48,7 @@
             var nodeName, inline, inst;
             var divContainer, divOuter, parentTargetNode, imagesArrow;
             nodeName = target.nodeName.toLowerCase();
-            
+
 
             if (nodeName === "input") {
 
@@ -80,15 +80,38 @@
                 });
 
                 imagesArrow.mousedown(function (event) {
-                    $.dropdown._showResult(target);
-                    event.stopPropagation();
+                    parent = $(target).parent().parent();
+                    divResult = parent.find("div.divResult:visible");
+                    if (divResult.length == 0) {
+
+                        var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
+                        if (objDiv) {
+                            
+                            $(objDiv).hide();
+                            $.dropdown._removeData(document, $.dropdown._openDiv);
+                        }
+
+                        $.dropdown._showResult(target);
+
+                        event.stopPropagation();
+                    }
+                    else {
+                        var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
+                        if (objDiv) {
+                            $(objDiv).hide();
+                            $.dropdown._removeData(document, $.dropdown._openDiv);
+                        }
+                    }
+
+                    //$.dropdown._showResult(target);
+                    //event.stopPropagation();
                 });
 
             }
         },
 
         _newInst: function (target, divOuter, divContainer) {
-            
+
             return {
                 input: target,
                 divOuter: divOuter,
@@ -181,8 +204,7 @@
                     divResult.height(instance.popUpHeight);
                 divResult.appendTo(parent);
 
-                if (instance.dataSource)
-                {
+                if (instance.dataSource) {
                     var data = instance.dataSource.data;
                     if (!data && instance.dataSource.transport && instance.dataSource.type) {
                         if (instance.dataSource.transport.read) {
@@ -194,7 +216,7 @@
                     else {
                         $.dropdown._buildDivResult(data, instance, divResult);
                     }
-                    
+
                 }
 
             }
@@ -226,16 +248,15 @@
             //}
 
             //var input = target;
-            var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
-            try {
+            var target = event.target;
+            if (!$(target).hasClass("divResult")) {
+                var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
                 if (objDiv) {
                     //event.stopPropagation();
                     $(objDiv).hide();
                     $.dropdown._removeData(document, $.dropdown._openDiv);
                 }
             }
-            catch (e)
-            { }
 
         }
 

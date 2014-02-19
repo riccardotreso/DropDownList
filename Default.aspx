@@ -86,7 +86,7 @@
 
             $('#Text2').dropdown({
                 popUpWidth: 700,
-                popUpHeight: "auto",
+                popUpHeight: 100,
                 dataSource: {
                     type: "json",
                     transport: {
@@ -165,6 +165,7 @@
             z-index: 100000;
             margin-top: -4px;
             cursor: default;
+            overflow-y:auto;
 
             -moz-box-shadow: 10px 10px 5px #dedede;
             -webkit-box-shadow: 10px 10px 5px #dedede;
