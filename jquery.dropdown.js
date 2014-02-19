@@ -9,8 +9,6 @@
 						Object - settings for attaching new datepicker functionality
 	   @return  jQuery object */
     $.fn.dropdown = function (options) {
-
-
         if (!$.dropdown.initialized) {
             $(document).mousedown($.dropdown._checkExternalClick);
             $.dropdown.initialized = true;
@@ -75,6 +73,7 @@
                 //bind event 
                 $(target).keyup(function (event) {
                     if (event.keyCode === 13) {
+                        $.dropdown._closeDivResult();
                         $.dropdown._showResult(target);
                     }
                 });
@@ -82,29 +81,11 @@
                 imagesArrow.mousedown(function (event) {
                     parent = $(target).parent().parent();
                     divResult = parent.find("div.divResult:visible");
+                    $.dropdown._closeDivResult();
                     if (divResult.length == 0) {
-
-                        var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
-                        if (objDiv) {
-                            
-                            $(objDiv).hide();
-                            $.dropdown._removeData(document, $.dropdown._openDiv);
-                        }
-
                         $.dropdown._showResult(target);
-
                         event.stopPropagation();
                     }
-                    else {
-                        var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
-                        if (objDiv) {
-                            $(objDiv).hide();
-                            $.dropdown._removeData(document, $.dropdown._openDiv);
-                        }
-                    }
-
-                    //$.dropdown._showResult(target);
-                    //event.stopPropagation();
                 });
 
             }
@@ -125,6 +106,14 @@
             this._insData(target, this._selectedItem, object);
             var instance = this._getData(target, this._instance);
             target.value = object[instance["dataTextField"]];
+        },
+
+        _closeDivResult: function () {
+            var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
+            if (objDiv) {
+                $(objDiv).hide();
+                $.dropdown._removeData(document, $.dropdown._openDiv);
+            }
         },
 
         _buildDivResult: function (data, instance, divResult) {
@@ -162,15 +151,9 @@
                         });
 
                         td.appendTo(trBody);
-
-
                     }
                 });
-
-
                 trBody.appendTo(tbody);
-
-
             });
             tbody.appendTo(table);
 
@@ -190,9 +173,6 @@
             input = input.target || input;
             var parent, divResult;
             parent = $(input).parent().parent();
-
-
-
             var instance = this._getData(input, this._instance);
 
             divResult = parent.find("div.divResult");
@@ -250,12 +230,8 @@
             //var input = target;
             var target = event.target;
             if (!$(target).hasClass("divResult")) {
-                var objDiv = $.dropdown._getData(document, $.dropdown._openDiv);
-                if (objDiv) {
-                    //event.stopPropagation();
-                    $(objDiv).hide();
-                    $.dropdown._removeData(document, $.dropdown._openDiv);
-                }
+                $.dropdown._closeDivResult();
+                
             }
 
         }
