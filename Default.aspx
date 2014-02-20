@@ -13,6 +13,7 @@
 
     <script src="Scripts/jquery-2.1.0.js"></script>
     <script src="jquery.dropdown.js"></script>
+    <link href="jquery.dropdown.css" rel="stylesheet" />
     <script>
         var list = [{
             id: 1,
@@ -123,114 +124,7 @@
 
     </script>
     <style>
-        table.result
-        {
-            width: 100%;
-            padding: 0;
-        }
-
-            table.result thead tr th
-            {
-                background-image: url(img/ui-bg_highlight-soft_75_cccccc_1x100.png);
-                background-repeat: repeat-x;
-            }
-
-            table.result tr
-            {
-                background-color: white;
-            }
-
-                table.result tr:hover
-                {
-                    background-color: silver;
-                }
-
-            table.result td
-            {
-                border-bottom: solid 1px silver;
-            }
-
-        .divContainer
-        {
-            /*float: left;*/
-            /*clear: both;*/
-            overflow: hidden;
-            position: relative;
-            display: inline-block;
-        }
-
-        .divResult
-        {
-            border: solid 1px silver;
-            background-color: white;
-            display: none;
-            position: absolute;
-            z-index: 100000;
-            margin-top: -4px;
-            cursor: default;
-            overflow-y: auto;
-            -moz-box-shadow: 10px 10px 5px #dedede;
-            -webkit-box-shadow: 10px 10px 5px #dedede;
-            filter: progid:DXImageTransform.Microsoft.Shadow(color='#dedede', Direction=135, Strength=10);
-            box-shadow: 10px 10px 5px #dedede;
-
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-        }
-
-        .spaninput
-        {
-            float: left;
-            height: 19px;
-            width: 150px;
-            border: 1px solid silver;
-            border-right-style: none;
-            overflow: hidden;
-            position: relative;
-            display: inline-block;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            -webkit-border-bottom-right-radius: 0px;
-            -webkit-border-top-right-radius: 0px;
-            -moz-border-bottom-right-radius: 0px;
-            -moz-border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-            border-top-right-radius: 0px;
-        }
-
-        .icon
-        {
-            width: 23px;
-            height: 21px;
-            background-image: url(img/ui-icons_666666_256x240.png);
-            float: left;
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            border: solid 1px silver;
-            border-left-style: none;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            -webkit-border-bottom-left-radius: 0px;
-            -webkit-border-top-left-radius: 0px;
-            -moz-border-bottom-left-radius: 0px;
-            -moz-border-top-left-radius: 0px;
-            border-bottom-left-radius: 0px;
-            border-top-left-radius: 0px;
-        }
-
-            .icon:hover
-            {
-                background-color: #EEEEEE;
-            }
-
-        .arrow
-        {
-            background-position: -61px -12px;
-        }
+        
     </style>
 
     <form id="form1" runat="server">

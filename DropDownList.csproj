@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="img\ui-icons_666666_256x240.png" />
+    <Content Include="jquery.dropdown.css" />
     <Content Include="packages.config" />
     <Content Include="jquery.dropdown.js" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
