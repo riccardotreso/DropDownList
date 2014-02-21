@@ -11,9 +11,37 @@
 
 <body>
 
-    <script src="Scripts/jquery-2.1.0.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="jquery.dropdown.js"></script>
     <link href="jquery.dropdown.css" rel="stylesheet" />
+
+    <script>
+        DoSearch = function () {
+            $.getJSON("http://pectp.apiary.io/Fornitore", function (responseData) {
+                alert("ee");
+            });
+
+
+            $.get("http://pectp.apiary.io/Fornitore", function (data) {
+                alert("test");
+            });
+
+
+            $.ajax({
+                type: "GET",
+                url: "http://pectp.apiary.io/Fornitore",
+                crossDomain: false,
+                success: function (data) {
+                    alert("success");
+                },
+                error: function (a, b, c) {
+                    alert("error");
+                }
+            
+            });
+        }
+    </script>
+
     <script>
         var list = [{
             id: 1,
@@ -29,7 +57,8 @@
             id: 3,
             nome: "maria",
             cognome: "verdi"
-        }]
+        }];
+
         $(document).ready(function () {
 
 
@@ -67,10 +96,12 @@
                 popUpHeight: "auto",
                 width: 300,
                 dataSource: {
-                    type: "json",
                     transport: {
-                        read: "http://pectp.apiary.io/WBE"
-                    },
+                        url: "http://pectp.apiary.io/WBE",
+                        type: "GET",
+                        crossDomain: true,
+                        dataType: "json"
+                    }
                 },
                 dataTextField: "Descrizione",
                 dataValueField: "WBE",
@@ -92,10 +123,12 @@
                 popUpHeight: 100,
                 width: 400,
                 dataSource: {
-                    type: "json",
                     transport: {
-                        read: "http://pectp.apiary.io/Fornitore"
-                    },
+                        url: "http://pectp.apiary.io/Fornitore",
+                        type: "GET",
+                        crossDomain: true,
+                        dataType: "json"
+                    }
                 },
                 dataTextField: "Descrizione",
                 dataValueField: "IdFornitore",
@@ -152,7 +185,7 @@
 
             <input type="text" id="Text3" />
 
-
+            <a onclick="DoSearch();">do search</a>
 
 
 

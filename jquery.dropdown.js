@@ -84,8 +84,8 @@
                 });
 
                 imagesArrow.mousedown(function (event) {
-                    parent = $(target).parent().parent();
-                    divResult = parent.find("div.divResult:visible");
+                    var parent = $(target).parent().parent();
+                    var divResult = parent.find("div.divResult:visible");
                     $.dropdown._closeDivResult();
                     if (divResult.length == 0) {
                         $.dropdown._showResult(target);
@@ -191,10 +191,17 @@
 
                 if (instance.dataSource) {
                     var data = instance.dataSource.data;
-                    if (!data && instance.dataSource.transport && instance.dataSource.type) {
-                        if (instance.dataSource.transport.read) {
-                            $.getJSON(instance.dataSource.transport.read, function (responseData) {
-                                $.dropdown._buildDivResult(responseData, instance, divResult);
+                    if (!data && instance.dataSource.transport) {
+                        if (instance.dataSource.transport.url) {
+                            $.ajax({
+                                type: instance.dataSource.transport.type ? instance.dataSource.transport.type : "GET",
+                                url: instance.dataSource.transport.url,
+                                crossDomain: $.dropdown._checkIfCrossDomain(instance.dataSource.transport.url),
+                                success: function (responseData) {
+                                    $.dropdown._buildDivResult(responseData, instance, divResult);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                }
                             });
                         }
                     }
@@ -239,6 +246,33 @@
 
             }
 
+        },
+
+        _checkIfCrossDomain: function (url) {
+            var urlDomain = url.replace("http://", "").split("/")[0];
+            var currentDomain = location.href.replace("http://", "").split("/")[0];
+            if (urlDomain === currentDomain)
+                return false;
+
+            var ieVersion = $.dropdown._getIEVersion();
+            if (ieVersion !== -1 && ieVersion < 9) {
+                return false;
+            }
+            return true;
+        },
+
+        _getIEVersion: function ()
+            // Returns the version of Internet Explorer or a -1
+            // (indicating the use of another browser).
+        {
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null)
+                    rv = parseFloat(RegExp.$1);
+            }
+            return rv;
         }
 
     });
