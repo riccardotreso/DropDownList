@@ -30,8 +30,11 @@
         this._openDiv = "DDL_DIVOPEN";
         this._instance = "DDL_instance";
         this._selectedItem = "DDL_SelectedItem";
-        this.popUpWidth = 400;
-        this.popUpHeight = 100;
+
+        this._typingTimer;
+        this._doneTypingInterval = 300;
+
+
     };
 
     $.extend(DropDownList.prototype, {
@@ -81,6 +84,19 @@
                         $.dropdown._closeDivResult();
                         $.dropdown._showResult(target);
                     }
+                    else {
+                        clearTimeout($.dropdown._typingTimer);
+                        $.dropdown._typingTimer = setTimeout(function () {
+                            $.dropdown._closeDivResult();
+                            $.dropdown._showResult(target, true);
+                        }, $.dropdown._doneTypingInterval);
+                    }
+                });
+
+
+                //on keydown, clear the countdown 
+                $(target).keydown(function () {
+                    clearTimeout($.dropdown._typingTimer);
                 });
 
                 imagesArrow.mousedown(function (event) {
@@ -174,21 +190,25 @@
         /* 
 		 * @param  input  element 
 		 */
-        _showResult: function (input) {
+        _showResult: function (input, filterResult) {
             input = input.target || input;
             var parent, divResult;
             parent = $(input).parent().parent();
             var instance = this._getData(input, this._instance);
 
-            divResult = parent.find("div.divResult");
-            if (divResult.length === 0) {
-                divResult = $('<div>');
-                divResult.attr("class", "divResult");
-                divResult.width(instance.popUpWidth ? instance.popUpWidth : 400);
-                if (instance.popUpHeight && !isNaN(instance.popUpHeight))
-                    divResult.height(instance.popUpHeight);
-                divResult.appendTo(parent);
 
+
+
+            divResult = parent.find("div.divResult");
+            if (divResult.length === 0 || filterResult) {
+                if (divResult.length === 0) {
+                    divResult = $('<div>');
+                    divResult.attr("class", "divResult");
+                    divResult.width(instance.popUpWidth ? instance.popUpWidth : 400);
+                    if (instance.popUpHeight && !isNaN(instance.popUpHeight))
+                        divResult.height(instance.popUpHeight);
+                    divResult.appendTo(parent);
+                }
                 if (instance.dataSource) {
                     var data = instance.dataSource.data;
                     if (!data && instance.dataSource.transport) {
@@ -206,6 +226,12 @@
                         }
                     }
                     else {
+                        if (filterResult === true) {
+                            //filtra i risultati
+                            $(divResult).empty();
+                            data = $.dropdown._filterData(data, instance, $(input).val());
+                        }
+
                         $.dropdown._buildDivResult(data, instance, divResult);
                     }
 
@@ -220,6 +246,26 @@
 
 
 
+        },
+
+
+        _filterData: function (data, instance, query) {
+
+            if (query === "")
+                return data;
+
+            var columns = instance.columns;
+            var arrResult = [];
+            var arrColumnToFilter = columns.filter(function (obj) { return (obj.filter === true); }); //filter the "filtrable" columns
+
+            $(data).each(function (index, data) {
+                $(arrColumnToFilter).each(function (i, obj) {
+                    if (data[obj.field].indexOf(query) !== -1)
+                        arrResult.push(data);
+                });
+            });
+
+            return arrResult;
         },
 
         _insData: function (target, key, value) {

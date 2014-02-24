@@ -81,13 +81,15 @@
                     field: "nome",
                     width: 166,
                     hidden: false,
-                    title: "nome"
+                    title: "nome",
+                    filter: true
                 },
                 {
                     field: "cognome",
                     width: 166,
                     hidden: false,
-                    title: "cognome"
+                    title: "cognome",
+                    filter: true
                 }]
             });
 
