@@ -1,28 +1,40 @@
-﻿table.result
+﻿@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+
+table.result
 {
     width: 100%;
     padding: 0;
+    font-family: 'Ubuntu', sans-serif;
 }
 
     table.result thead tr th
     {
         background-image: url(img/ui-bg_highlight-soft_75_cccccc_1x100.png);
         background-repeat: repeat-x;
+        color:black;
     }
+
+    table.result thead tr th:hover
+    {
+        color:black;
+    }
+
 
     table.result tr
     {
         background-color: white;
+        color:black;
     }
 
         table.result tr:hover
         {
-            background-color: silver;
+            background-color: #08C;
+            color:white;
         }
 
     table.result td
     {
-        border-bottom: solid 1px silver;
+        /*border-bottom: solid 1px silver;*/
     }
 
 .divContainer
@@ -44,10 +56,10 @@
     margin-top: -4px;
     cursor: default;
     overflow-y: auto;
-    -moz-box-shadow: 10px 10px 5px #dedede;
-    -webkit-box-shadow: 10px 10px 5px #dedede;
+    -moz-box-shadow: 7px 7px 16px #dedede;
+    -webkit-box-shadow: 7px 7px 16px #dedede;
     filter: progid:DXImageTransform.Microsoft.Shadow(color='#dedede', Direction=135, Strength=10);
-    box-shadow: 10px 10px 5px #dedede;
+    box-shadow: 7px 7px 16px #dedede;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -55,6 +67,7 @@
 
 .spaninput
 {
+    font-family: 'Ubuntu', sans-serif;
     float: left;
     height: 19px;
     width: 150px;
