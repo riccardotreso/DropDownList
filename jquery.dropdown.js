@@ -260,7 +260,7 @@
 
             $(data).each(function (index, data) {
                 $(arrColumnToFilter).each(function (i, obj) {
-                    if (data[obj.field].indexOf(query) !== -1)
+                    if (data[obj.field].toLowerCase().indexOf(query.toLowerCase()) !== -1)
                         arrResult.push(data);
                 });
             });
