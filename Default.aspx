@@ -15,33 +15,7 @@
     <script src="jquery.dropdown.js"></script>
     <link href="jquery.dropdown.css" rel="stylesheet" />
 
-    <script>
-        DoSearch = function () {
-            $.getJSON("http://pectp.apiary.io/Fornitore", function (responseData) {
-                alert("ee");
-            });
-
-
-            $.get("http://pectp.apiary.io/Fornitore", function (data) {
-                alert("test");
-            });
-
-
-            $.ajax({
-                type: "GET",
-                url: "http://pectp.apiary.io/Fornitore",
-                crossDomain: false,
-                success: function (data) {
-                    alert("success");
-                },
-                error: function (a, b, c) {
-                    alert("error");
-                }
-            
-            });
-        }
-    </script>
-
+    
     <script>
         var list = [{
             id: 1,
@@ -107,6 +81,7 @@
                 },
                 dataTextField: "Descrizione",
                 dataValueField: "WBE",
+                filterType: "static",
                 columns: [{
                     field: "WBE",
                     hidden: false,
@@ -115,7 +90,8 @@
                 {
                     field: "Descrizione",
                     hidden: false,
-                    title: "Descrizione"
+                    title: "Descrizione",
+                    filter: true
                 }]
 
             });
@@ -134,6 +110,7 @@
                 },
                 dataTextField: "Descrizione",
                 dataValueField: "IdFornitore",
+                filterType: "none",
                 columns: [{
                     field: "IdFornitore",
                     hidden: true,
@@ -187,7 +164,7 @@
 
             <input type="text" id="Text3" />
 
-            <a onclick="DoSearch();">do search</a>
+            
 
 
 

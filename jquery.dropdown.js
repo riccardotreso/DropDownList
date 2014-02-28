@@ -29,6 +29,7 @@
     function DropDownList() {
         this._openDiv = "DDL_DIVOPEN";
         this._instance = "DDL_instance";
+        this._dataResult = "DDL_DataResult";
         this._selectedItem = "DDL_SelectedItem";
 
         this._typingTimer;
@@ -195,7 +196,11 @@
             var parent, divResult;
             parent = $(input).parent().parent();
             var instance = this._getData(input, this._instance);
-
+            var dataResult = null;
+            var url;
+            var inputVal = $(input).val();
+            var doSearch = true, saveData = false, staticFilter = false, createDivResult = false;
+            var self = this;
 
 
 
@@ -208,28 +213,71 @@
                     if (instance.popUpHeight && !isNaN(instance.popUpHeight))
                         divResult.height(instance.popUpHeight);
                     divResult.appendTo(parent);
+                    createDivResult = true;
                 }
                 if (instance.dataSource) {
                     var data = instance.dataSource.data;
                     if (!data && instance.dataSource.transport) {
                         if (instance.dataSource.transport.url) {
-                            $.ajax({
-                                type: instance.dataSource.transport.type ? instance.dataSource.transport.type : "GET",
-                                url: instance.dataSource.transport.url,
-                                crossDomain: $.dropdown._checkIfCrossDomain(instance.dataSource.transport.url),
-                                success: function (responseData) {
-                                    $.dropdown._buildDivResult(responseData, instance, divResult);
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
+                            url = instance.dataSource.transport.url
+                            //Check if static filter 
+                            if (instance.filterType) {
+                                if (instance.filterType === "dynamic") {
+                                    url += (url.indexOf('?') !== -1 ? "&" : "?") + "query=" + inputVal; //TODO clear special char
+                                    doSearch = true;
                                 }
-                            });
+                                else if (instance.filterType === "static")
+                                {
+                                    staticFilter = true;
+                                    dataResult = this._getData(input, this._dataResult);
+                                    if (dataResult) {
+                                        doSearch = false;
+                                        saveData = false;
+
+                                        $(divResult).empty();
+                                        dataResult = $.dropdown._filterData(dataResult, instance, inputVal);
+                                        $.dropdown._buildDivResult(dataResult, instance, divResult);
+                                    }
+                                    else {
+                                        doSearch = true;
+                                        saveData = true;
+                                    }
+                                }
+                                else if (instance.filterType === "none"){
+                                    doSearch = createDivResult;
+                                }
+                            }
+                            if (doSearch) {
+                                //TODO Check if data not loaded
+                                $.ajax({
+                                    type: instance.dataSource.transport.type ? instance.dataSource.transport.type : "GET",
+                                    url: instance.dataSource.transport.url,
+                                    crossDomain: $.dropdown._checkIfCrossDomain(instance.dataSource.transport.url),
+                                    success: function (responseData) {
+
+                                        if (staticFilter) {
+                                            if (saveData)
+                                                $.dropdown._insData(input, $.dropdown._dataResult, responseData);
+
+                                            $(divResult).empty();
+                                            responseData = $.dropdown._filterData(responseData, instance, inputVal);
+                                            
+                                        }
+
+                                        $.dropdown._buildDivResult(responseData, instance, divResult);
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                    }
+                                });
+                            }
                         }
                     }
                     else {
                         if (filterResult === true) {
                             //filtra i risultati
                             $(divResult).empty();
-                            data = $.dropdown._filterData(data, instance, $(input).val());
+                            data = $.dropdown._filterData(data, instance, inputVal);
                         }
 
                         $.dropdown._buildDivResult(data, instance, divResult);
@@ -257,6 +305,9 @@
             var columns = instance.columns;
             var arrResult = [];
             var arrColumnToFilter = columns.filter(function (obj) { return (obj.filter === true); }); //filter the "filtrable" columns
+
+            if (arrColumnToFilter.length === 0)
+                return data;
 
             $(data).each(function (index, data) {
                 $(arrColumnToFilter).each(function (i, obj) {
