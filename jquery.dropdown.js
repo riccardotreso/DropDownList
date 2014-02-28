@@ -251,7 +251,7 @@
                                 //TODO Check if data not loaded
                                 $.ajax({
                                     type: instance.dataSource.transport.type ? instance.dataSource.transport.type : "GET",
-                                    url: instance.dataSource.transport.url,
+                                    url: url,
                                     crossDomain: $.dropdown._checkIfCrossDomain(instance.dataSource.transport.url),
                                     success: function (responseData) {
 
