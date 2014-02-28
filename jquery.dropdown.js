@@ -226,8 +226,7 @@
                                     url += (url.indexOf('?') !== -1 ? "&" : "?") + "query=" + inputVal; //TODO clear special char
                                     doSearch = true;
                                 }
-                                else if (instance.filterType === "static")
-                                {
+                                else if (instance.filterType === "static") {
                                     staticFilter = true;
                                     dataResult = this._getData(input, this._dataResult);
                                     if (dataResult) {
@@ -243,7 +242,7 @@
                                         saveData = true;
                                     }
                                 }
-                                else if (instance.filterType === "none"){
+                                else if (instance.filterType === "none") {
                                     doSearch = createDivResult;
                                 }
                             }
@@ -254,16 +253,12 @@
                                     url: url,
                                     crossDomain: $.dropdown._checkIfCrossDomain(instance.dataSource.transport.url),
                                     success: function (responseData) {
-
                                         if (staticFilter) {
                                             if (saveData)
                                                 $.dropdown._insData(input, $.dropdown._dataResult, responseData);
-
-                                            $(divResult).empty();
                                             responseData = $.dropdown._filterData(responseData, instance, inputVal);
-                                            
                                         }
-
+                                        $(divResult).empty();
                                         $.dropdown._buildDivResult(responseData, instance, divResult);
 
                                     },
