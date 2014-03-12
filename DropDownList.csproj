@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="img\select_bg.gif" />
     <Content Include="img\ui-icons_666666_256x240.png" />
     <Content Include="jquery.dropdown.css" />
     <Content Include="packages.config" />

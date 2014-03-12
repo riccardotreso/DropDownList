@@ -9,9 +9,10 @@ table.result
 
     table.result thead tr th
     {
-        background-image: url(img/ui-bg_highlight-soft_75_cccccc_1x100.png);
+        background-image: url(img/select_bg.gif);
         background-repeat: repeat-x;
         color:black;
+        height:24px;
     }
 
     table.result thead tr th:hover
