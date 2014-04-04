@@ -127,7 +127,14 @@
             this._removeData(target, this._selectedItem);
             this._insData(target, this._selectedItem, object);
             var instance = this._getData(target, this._instance);
-            target.value = object[instance["dataTextField"]];
+
+            //tresor 04042014
+            var arrDataText = instance["dataTextField"].split(",");
+            var text = [];
+            $(arrDataText).each(function (index, value) {
+                text.push(object[value]);
+            });
+            target.value = text.join(" ");
         },
 
         _closeDivResult: function () {
@@ -201,6 +208,7 @@
             var inputVal = $(input).val();
             var doSearch = true, saveData = false, staticFilter = false, createDivResult = false;
             var self = this;
+            var disebleShow = false;
 
 
 
@@ -223,8 +231,21 @@
                             //Check if static filter 
                             if (instance.filterType) {
                                 if (instance.filterType === "dynamic") {
-                                    url += (url.indexOf('?') !== -1 ? "&" : "?") + "query=" + inputVal; //TODO clear special char
-                                    doSearch = true;
+                                    //tresor minChar 04042014
+                                    if (instance.minChar && !isNaN(instance.minChar)) {
+                                        if (inputVal.length < instance.minChar) {
+                                            doSearch = false;
+                                            disebleShow = true;
+                                        }
+                                        else {
+                                            url += (url.indexOf('?') !== -1 ? "&" : "?") + "query=" + inputVal; //TODO clear special char
+                                            doSearch = true;
+                                        }
+                                    }
+                                    else {
+                                        url += (url.indexOf('?') !== -1 ? "&" : "?") + "query=" + inputVal; //TODO clear special char
+                                        doSearch = true;
+                                    }
                                 }
                                 else if (instance.filterType === "static") {
                                     staticFilter = true;
@@ -281,11 +302,13 @@
                 }
 
             }
-            divResult.show();
-
-
-            this._insData(document, $.dropdown._openDiv, divResult);
-
+            if (!disebleShow) {
+                divResult.show();
+                this._insData(document, $.dropdown._openDiv, divResult);
+            }
+            else {
+                alert("Digitare almeno " + instance.minChar + " caretteri per effettuare la ricerca");
+            }
 
 
 
